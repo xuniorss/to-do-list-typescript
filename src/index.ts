@@ -10,8 +10,20 @@ const listarTarefas = () => {
     tarefas.map(item => {
         let todoElement: HTMLElement = document.createElement('li')
         let tarefaText: Text = document.createTextNode(item)
+        let linkElement: HTMLAnchorElement = document.createElement('a')
+
+        linkElement.setAttribute('href', '#')
+
+        let posicao: number = tarefas.indexOf(item)
+
+        linkElement.setAttribute('onclick', `deletarTarefa(${posicao})`)
+        linkElement.setAttribute('style', 'margin-left: 10px')
+
+        let linkText: Text = document.createTextNode('Excluir')
+        linkElement.appendChild(linkText)
 
         todoElement.appendChild(tarefaText)
+        todoElement.appendChild(linkElement)
         listElement.appendChild(todoElement)
     })
 }
@@ -31,6 +43,12 @@ const adicionarTarefas = (): boolean | void => {
 }
 
 buttonElement.onclick = adicionarTarefas
+
+function deletarTarefa(posicao: number) {
+    tarefas.splice(posicao, 1)
+    listarTarefas()
+    saveData()
+}
 
 const saveData = () => {
     localStorage.setItem('@listagem_tarefas', JSON.stringify(tarefas))
